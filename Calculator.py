@@ -3,8 +3,9 @@ from tkinter import font as tkfont
 
 window = Tk()
 window.geometry("348x389")
-window.title("Pycalc")
+window.title("Pyalc")
 window.configure(bg = "#383838")
+window.resizable(0,0)
 
 f1 = tkfont.Font(size = 34, weight = 'bold')
 f2 = tkfont.Font(size = 20, weight = 'bold')
@@ -208,8 +209,5 @@ btSub = Button(window, text = "-", font = f2, bg = '#202020', fg = 'white', bd =
 btSub.place(x = 279, y = 251, width = 66, height = 66)
 btEq = Button(window, text = "=", font = f2, bg = '#db440d', fg = 'white', bd = 0, activebackground = '#eb6d3f', command = lambda : result(1))
 btEq.place(x = 210, y = 320, width = 135, height = 66)
-
-
-
 
 window.mainloop()
