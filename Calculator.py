@@ -2,8 +2,8 @@ from tkinter import *
 from tkinter import font as tkfont
 
 window = Tk()
-window.geometry("348x389")
-window.title("Pyalc")
+window.geometry("348x520")
+window.title("PyCalc")
 window.configure(bg = "#383838")
 window.resizable(0,0)
 
@@ -163,51 +163,85 @@ def result(y=0):
             dispoper.set("=")
         anscheck = 1
 
-title = Label(window, text = "Calculator", bg = '#383838', fg = '#C8C8C8', font = f3)
-title.place(x = 7, y = 7)
-oper = Label(window, textvariable = dispoper, bg = '#383838', fg = '#C8C8C8', font = f2)
+
+def option_changed(*args):
+    x = var.get()
+    if x == "Standard":
+        scffrm.forget()
+        covfrm.forget()
+        stdfrm.pack()
+    elif x == "Scientific":
+        stdfrm.forget()
+        covfrm.forget()
+        scffrm.pack()
+    elif x == "Converter":
+        stdfrm.forget()
+        scffrm.forget()
+        covfrm.pack()
+
+basefrm = Frame(window, height = 40, width = 348).pack()
+var = StringVar(basefrm)
+var.set("Standard")
+var.trace('w',option_changed)
+switcher = OptionMenu(basefrm, var, "Standard", "Scientific", "Converter")
+switcher.place(x = 7, y = 7)
+switcher.configure(bg = "#383838", fg = "white", highlightthickness = 0, bd = 0, font = f3, width = 8)
+
+stdfrm = Frame(window, height = 465, width = 348, bg = "red")
+scffrm = Frame(window, height = 465, width = 348, bg = "yellow")
+covfrm = Frame(window, height = 465, width = 348, bg = "orange")
+
+
+oper = Label(stdfrm, textvariable = dispoper, bg = 'green', fg = '#C8C8C8', font = f2)
 oper.place(x = 320, y = 10)
-display = Label(window, textvariable = dispval, bd = 0, bg = "#383838", anchor = 'e', fg = "white", justify = RIGHT, font = f1)
+display = Label(stdfrm, textvariable = dispval, bd = 0, bg = "blue", anchor = 'e', fg = "white", justify = RIGHT, font = f1)
 display.place(x = 3, y = 35, width =340, height = 50)
 
-bt7 = Button(window, text = "7", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("7"))
+bt7 = Button(stdfrm, text = "7", font = f2, bg = 'black', fg = 'white', borderwidth = 0, relief = FLAT, activebackground = '#787878', command = lambda :add_disp("7"))
 bt7.place(x = 3, y = 113, width = 66, height = 66)
-bt8 = Button(window, text = "8", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("8"))
+bt8 = Button(stdfrm, text = "8", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("8"))
 bt8.place(x = 72, y = 113, width = 66, height = 66)
-bt9 = Button(window, text = "9", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("9"))
+bt9 = Button(stdfrm, text = "9", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("9"))
 bt9.place(x = 141, y = 113, width = 66, height = 66)
-bt4 = Button(window, text = "4", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("4"))
+bt4 = Button(stdfrm, text = "4", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("4"))
 bt4.place(x = 3, y = 182, width = 66, height = 66)
-bt5 = Button(window, text = "5", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("5"))
+bt5 = Button(stdfrm, text = "5", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("5"))
 bt5.place(x = 72, y = 182, width = 66, height = 66)
-bt6 = Button(window, text = "6", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("6"))
+bt6 = Button(stdfrm, text = "6", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("6"))
 bt6.place(x = 141, y = 182, width = 66, height = 66)
-bt1 = Button(window, text = "1", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("1"))
+bt1 = Button(stdfrm, text = "1", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("1"))
 bt1.place(x = 3, y = 251, width = 66, height = 66)
-bt2 = Button(window, text = "2", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("2"))
+bt2 = Button(stdfrm, text = "2", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("2"))
 bt2.place(x = 72, y = 251, width = 66, height = 66)
-bt3 = Button(window, text = "3", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("3"))
+bt3 = Button(stdfrm, text = "3", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("3"))
 bt3.place(x = 141, y = 251, width = 66, height = 66)
-btDot = Button(window, text = ".", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("."))
+btDot = Button(stdfrm, text = ".", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("."))
 btDot.place(x = 3, y = 320, width = 66, height = 66)
-bt0 = Button(window, text = "0", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("0"))
+bt0 = Button(stdfrm, text = "0", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda :add_disp("0"))
 bt0.place(x = 72, y = 320, width = 66, height = 66)
-btPerc = Button(window, text = "%", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda : do_perc())
+btPerc = Button(stdfrm, text = "%", font = f2, bg = 'black', fg = 'white', bd = 0, activebackground = '#787878', command = lambda : do_perc())
 btPerc.place(x = 141, y = 320, width = 66, height = 66)
 
-btDel = Button(window, text = "C", font = f2, bg = '#202020', fg = 'white', bd = 0, activebackground = '#A9A9A9', command = lambda : rm_disp())
+btDel = Button(stdfrm, text = "C", font = f2, bg = '#202020', fg = 'white', bd = 0, activebackground = '#A9A9A9', command = lambda : rm_disp())
 btDel.place(x = 210, y = 113, width = 66, height = 66)
-btCLR = Button(window, text = "AC", font = f2, bg = '#9e0e0e', fg = 'white', bd = 0, activebackground = '#cc3737', command = lambda : clrscr())
+btCLR = Button(stdfrm, text = "AC", font = f2, bg = '#9e0e0e', fg = 'white', bd = 0, activebackground = '#cc3737', command = lambda : clrscr())
 btCLR.place(x = 279, y = 113, width = 66, height = 66)
-btMul = Button(window, text = "*", font = f2, bg = '#202020', fg = 'white', bd = 0, activebackground = '#A9A9A9', command = lambda : operation(3))
+btMul = Button(stdfrm, text = "*", font = f2, bg = '#202020', fg = 'white', bd = 0, activebackground = '#A9A9A9', command = lambda : operation(3))
 btMul.place(x = 210, y = 182, width = 66, height = 66)
-btDiv = Button(window, text = "÷", font = f2, bg = '#202020', fg = 'white', bd = 0, activebackground = '#A9A9A9', command = lambda : operation(4))
+btDiv = Button(stdfrm, text = "÷", font = f2, bg = '#202020', fg = 'white', bd = 0, activebackground = '#A9A9A9', command = lambda : operation(4))
 btDiv.place(x = 279, y = 182, width = 66, height = 66)
-btAdd = Button(window, text = "+", font = f2, bg = '#202020', fg = 'white', bd = 0, activebackground = '#A9A9A9', command = lambda : operation(1))
+btAdd = Button(stdfrm, text = "+", font = f2, bg = '#202020', fg = 'white', bd = 0, activebackground = '#A9A9A9', command = lambda : operation(1))
 btAdd.place(x = 210, y = 251, width = 66, height = 66)
-btSub = Button(window, text = "-", font = f2, bg = '#202020', fg = 'white', bd = 0, activebackground = '#A9A9A9', command = lambda : operation(2))
+btSub = Button(stdfrm, text = "-", font = f2, bg = '#202020', fg = 'white', bd = 0, activebackground = '#A9A9A9', command = lambda : operation(2))
 btSub.place(x = 279, y = 251, width = 66, height = 66)
-btEq = Button(window, text = "=", font = f2, bg = '#db440d', fg = 'white', bd = 0, activebackground = '#eb6d3f', command = lambda : result(1))
+btEq = Button(stdfrm, text = "=", font = f2, bg = '#db440d', fg = 'white', bd = 0, activebackground = '#eb6d3f', command = lambda : result(1))
 btEq.place(x = 210, y = 320, width = 135, height = 66)
+
+## Elements for Scientic calculator
+
+scfdisplay = Label(scffrm, bg = "green")
+scfdisplay.place(x = 0, y = 0, height = 100, width = 340)
+
+
 
 window.mainloop()
