@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import font as tkfont
+from math import sin, cos, tan, sinh, cosh, tanh, sqrt, radians
 
 window = Tk()
 window.geometry("350x550")
@@ -27,6 +28,9 @@ def option_changed(*args):
         scffrm.forget()
         covfrm.pack()
 
+def change_color() :
+    scfbtSign['bg'] = 'red'
+
 ## vriables for standard calculator ##
 ##''''''''''''''''''''''''''''''''''##
 
@@ -47,14 +51,15 @@ stdmemvar = StringVar()
 scfdispval = StringVar()
 scfvalue = ""
 scfmemvar = StringVar()
-scfdispoper = StringVar()
-scfcheck = 0
-scfvalue1 = 0
-scfvalue2 = 0
+scftempdispval = StringVar()
+scftrigcheck = 0
+scfpowercheck = 0
+scfevalue1 = 0
+scfvalu2 = 0
 scfans = 0
 scfanscheck = 0
 scfm = 0
-
+scfeval = ""
 
 ## functions for standard calculator ##
 ##'''''''''''''''''''''''''''''''''''##
@@ -224,8 +229,9 @@ def stdcheckmem(x):
 ##'''''''''''''''''''''''''''''''''''''##
 
 def add_scfdisp(x):
-    global scfvalue
+    global scfvalue, scfeval
     scfvalue = scfvalue + x
+    scfeval = scfeval + x
     scfdispval.set(scfvalue)
 
 def scfclrscr():
@@ -253,6 +259,58 @@ def scfdo_perc():
     scfvalue = str(x)
     scfdispval.set(scfvalue)
 
+def scfdo_trig(x) :
+    global scfvalue, scfeval, scftrigcheck
+    if x == 1 :
+        scfvalue = scfvalue + "sin("
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "sin(radians("
+        scftrigcheck = 1
+    elif x == 2 :
+        scfvalue = scfvalue + "cos("
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "cos(radians("
+        scftrigcheck = 1
+    elif x == 3 :
+        scfvalue = scfvalue + "tan("
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "tan(radians("
+        scftrigcheck = 1
+    elif x == 4 :
+        scfvalue = scfvalue + "csc("
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "csc(radians("
+        scftrigcheck = 1
+    elif x == 5 :
+        scfvalue = scfvalue + "sec("
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "sec(radians("
+        scftrigcheck = 1
+    elif x == 6 :
+        scfvalue = scfvalue + "cot("
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "cot(radians("
+        scftrigcheck = 1
+
+def scfdo_power(x) :
+    global scfvalue, scfeval, scfpowercheck
+    if x == 1:
+        scfvalue = scfvalue + "√("
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "sqrt("
+        
+def scfdo_oper(x) :
+    global scfvalue, scfeval, scftrigcheck
+    if x == '+' :
+        if scftrigcheck == 1 :
+            scfeval = scfeval + ")"
+            scftrigcheck = 0
+        scfvalue = scfvalue + x
+        scfeval = scfeval + x
+        scfdispval.set(scfvalue)
+    
+
+
 def scfcheckmem(x):
     global scfm, scfvalue, scfmemvar, scfdispval
     if x == 3:
@@ -272,113 +330,14 @@ def scfcheckmem(x):
         scfm = 0
         scfmemvar.set("")
 
-def scfoperation(x):
-    global scfvalue, scfvalue1
-    global scfcheck
-    if x == 1:
-        scfdispoper.set("+")
-        if scfcheck ==1 or scfcheck == 2 or scfcheck == 3 or scfcheck ==4 :
-            scfresult()
-        else:
-            scfvalue1 = float(scfvalue)
-            scfvalue = ""
-            scfdispval.set(scfvalue)
-        scfcheck = 1
-    elif x == 2:
-        scfdispoper.set("-")
-        if scfcheck ==1 or scfcheck == 2 or scfcheck == 3 or scfcheck ==4 :
-            scfresult()
-        else:
-            scfvalue1 = float(scfvalue)
-            scfvalue = ""
-            scfdispval.set(scfvalue)
-        scfcheck = 2
-    elif x == 3:
-        scfdispoper.set("*")
-        if scfcheck ==1 or scfcheck == 2 or scfcheck == 3 or scfcheck ==4 :
-            scfresult()
-        else:
-            scfvalue1 = float(scfvalue)
-            scfvalue = ""
-            scfdispval.set(scfvalue)
-        scfcheck = 3
-    elif x == 4:
-        scfdispoper.set("÷")
-        if scfcheck ==1 or scfcheck == 2 or scfcheck == 3 or scfcheck ==4 :
-            scfresult()
-        else:
-            scfvalue1 = float(scfvalue)
-            scfvalue = ""
-            scfdispval.set(scfvalue)
-        scfcheck = 4
-
-def scfresult(y=0):
-    global scfvalue, scfvalue1, scfvalue2, scfans, scfcheck, scfanscheck
-    if scfcheck == 1:
-        if scfvalue == "":
-            scfvalue2 = scfvalue1
-        else:
-            scfvalue2 = float(scfvalue)
-        scfans = scfvalue1 + scfvalue2
-        scfvalue = str(scfans)
-        if scfvalue[len(scfvalue)-1] == '0':
-            x = len(scfvalue)
-            scfvalue = scfvalue[:x - 2]
-        scfvalue1 = float(scfvalue)
-        scfdispval.set(scfvalue)
-        if y == 1:
-            scfcheck = 0
-            scfdispoper.set("=")
-        scfanscheck = 1
-    elif scfcheck == 2:
-        if scfvalue == "":
-            scfvalue2 = scfvalue1
-        else:
-            scfvalue2 = float(scfvalue)
-        scfans = scfvalue1 - scfvalue2
-        scfvalue = str(scfans)
-        if scfvalue[len(scfvalue)-1] == '0':
-            x = len(scfvalue)
-            scfvalue = scfvalue[:x - 2]
-        scfvalue1 =float(scfvalue)
-        scfdispval.set(scfvalue)
-        if y == 1:
-            scfcheck = 0
-            scfdispoper.set("=")
-        scfanscheck = 1
-    elif scfcheck == 3:
-        if scfvalue == "":
-            scfvalue2 = scfvalue1
-        else:
-            scfvalue2 = float(scfvalue)
-        scfans = scfvalue1 * scfvalue2
-        scfvalue = str(scfans)
-        if scfvalue[len(scfvalue)-1] == '0':
-            x = len(scfvalue)
-            scfvalue = scfvalue[:x - 2]
-        scfvalue1 = float(scfvalue)
-        scfdispval.set(scfvalue)
-        if y == 1:
-            scfcheck = 0
-            scfdispoper.set("=")
-        scfanscheck = 1
-    elif scfcheck == 4:
-        if scfvalue == "":
-            scfvalue2 = scfvalue1
-        else:
-            scfvalue2 = float(scfvalue)
-        scfans = scfvalue1 / scfvalue2
-        scfvalue = str(scfans)
-        if scfvalue[len(scfvalue)-1] == '0':
-            x = len(scfvalue)
-            scfvalue = scfvalue[:x - 2]
-        scfvalue1 = float(scfvalue)
-        scfdispval.set(scfvalue)
-        if y == 1:
-            scfcheck = 0
-            scfdispoper.set("=")
-        scfanscheck = 1
-
+def scfresult() :
+    global scfvalue, scfeval, scftrigcheck
+    if scftrigcheck == 1:
+        scfeval = scfeval + ")"
+    x = eval(scfeval)
+    scftempdispval.set(scfvalue)
+    scfvalue = str(x)
+    scfdispval.set(scfvalue)
 
 ## General elements for all mode ##
 ##===============================##
@@ -389,7 +348,7 @@ var.set("Standard")
 var.trace('w',option_changed)
 switcher = OptionMenu(basefrm, var, "Standard", "Scientific", "Converter")
 switcher.place(x = 7, y = 7)
-switcher.configure(bg = "#383838", fg = "white", highlightthickness = 0, bd = 0, font = f3, width = 8)
+switcher.configure(bg = "#383838", fg = "white", highlightthickness = 0, bd = 0, activebackground = '#787878', font = f3, width = 8)
 
 stdfrm = Frame(window, height = 510, width = 350, bg = "#383838")
 scffrm = Frame(window, height = 510, width = 350, bg = "#383838")
@@ -458,23 +417,22 @@ btEq.place(x = 210, y = 438, width = 135, height = 66)
 ## Elements for Scientic calculator ##
 ##==================================##
 
-scfoper = Label(scffrm, textvariable = scfdispoper, bg = "#383838", fg = '#C8C8C8', font = f4)
-scfoper.place(x = 320, y = 10)
+scfdisplay1 = Label(scffrm, textvariable = scfdispval, bg = "#383838", fg = 'white', anchor = 'e', justify = RIGHT, font = f4)
+scfdisplay1.place(x = 5, y = 40, height = 60, width = 340)
+scfdisplay2 = Label(scffrm, textvariable = scftempdispval, bg = "#383838", fg = 'white', anchor = 'e', justify = RIGHT, font = f3)
+scfdisplay2.place(x = 5, y = 0, height = 40, width = 340)
 
-scfdisplay = Label(scffrm, textvariable = scfdispval, bg = "black", fg = 'white', anchor = 'e', justify = RIGHT, font = f3)
-scfdisplay.place(x = 5, y = 0, height = 100, width = 340)
-
-scfbtsin = Button(scffrm, text = "sin", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555')
+scfbtsin = Button(scffrm, text = "sin", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555', command = lambda : scfdo_trig(1))
 scfbtsin.place(x = 5, y = 105, height = 55, width = 55)
-scfbtcos = Button(scffrm, text = "cos", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555')
+scfbtcos = Button(scffrm, text = "cos", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555', command = lambda : scfdo_trig(2))
 scfbtcos.place(x = 5, y = 162, height = 55, width = 55)
-scfbttan = Button(scffrm, text = "tan", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555')
+scfbttan = Button(scffrm, text = "tan", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555', command = lambda : scfdo_trig(3))
 scfbttan.place(x = 5, y = 219, height = 55, width = 55)
-scfbtcsc = Button(scffrm, text = "csc", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555')
+scfbtcsc = Button(scffrm, text = "csc", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555', command = lambda : scfdo_trig(4))
 scfbtcsc.place(x = 62, y = 105, height = 55, width = 55)
-scfbtsec = Button(scffrm, text = "sec", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555')
+scfbtsec = Button(scffrm, text = "sec", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555', command = lambda : scfdo_trig(5))
 scfbtsec.place(x = 62, y = 162, height = 55, width = 55)
-scfbtcot = Button(scffrm, text = "cot", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555')
+scfbtcot = Button(scffrm, text = "cot", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555', command = lambda : scfdo_trig(6))
 scfbtcot.place(x = 62, y = 219, height = 55, width = 55)
 
 scfMC = Button(scffrm, text = "MC", bd = 0, bg = '#777777', fg = 'white', highlightbackground = '#777777')
@@ -489,9 +447,9 @@ scfMadd = Button(scffrm, text = "M+", bd = 0, bg = '#777777', fg = 'white', high
 scfMadd.place(x = 233, y = 162, height = 55, width = 55)
 scfMsub = Button(scffrm, text = "M-", bd = 0, bg = '#777777', fg = 'white', highlightbackground = '#777777')
 scfMsub.place(x = 290, y = 162, height = 55, width = 55)
-scfbtlb = Button(scffrm, text = "(", bd = 0, bg = '#777777', fg = 'white', highlightbackground = '#777777')
+scfbtlb = Button(scffrm, text = "(", bd = 0, bg = '#777777', fg = 'white', highlightbackground = '#777777', command = lambda :add_scfdisp("("))
 scfbtlb.place(x = 119, y = 105, height = 55, width = 55)
-scfbtrb = Button(scffrm, text = ")", bd = 0, bg = '#777777', fg = 'white', highlightbackground = '#777777')
+scfbtrb = Button(scffrm, text = ")", bd = 0, bg = '#777777', fg = 'white', highlightbackground = '#777777', command = lambda :add_scfdisp(")"))
 scfbtrb.place(x = 176, y = 105, height = 55, width = 55)
 
 scfbt7 = Button(scffrm, text = "7", bg = "black", fg = "white", bd = 0, highlightbackground = 'black', font = f2, activebackground = '#787878', command = lambda :add_scfdisp("7"))
@@ -520,7 +478,7 @@ scfbtDot = Button(scffrm, text = ".", bg = "black", fg = "white", bd = 0, highli
 scfbtDot.place(x = 119, y = 447, height = 55, width = 55)
 
 
-scfbtrot = Button(scffrm, text = "√x", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555')
+scfbtrot = Button(scffrm, text = "√x", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555', command = lambda : scfdo_power(1))
 scfbtrot.place(x = 119, y = 219, height = 55, width = 55)
 scfbtxy = Button(scffrm, text = "xy", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555')
 scfbtxy.place(x = 176, y = 219, height = 55, width = 55)
@@ -539,18 +497,18 @@ scfbtx2 = Button(scffrm, text = "x²", bd = 0, bg = '#202020', fg = 'white', hig
 scfbtx2.place(x = 176, y = 333, height = 55, width = 55)
 scfbtPerc = Button(scffrm, text = "%", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', command = lambda : scfdo_perc())
 scfbtPerc.place(x = 176, y = 390, height = 55, width = 55)
-scfbtSign = Button(scffrm, text = "+/-", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020')
+scfbtSign = Button(scffrm, text = "+/-", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', command = change_color)
 scfbtSign.place(x = 176, y = 447, height = 55, width = 55)
 
-scfbtMul = Button(scffrm, text = "*", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', font = f2, command = lambda : scfoperation(3))
+scfbtMul = Button(scffrm, text = "*", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', font = f2, command = lambda : scfdo_oper("*"))
 scfbtMul.place(x = 233, y = 333, height = 55, width = 55)
-scfbtDiv = Button(scffrm, text = "/", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', font = f2, command = lambda : scfoperation(4))
+scfbtDiv = Button(scffrm, text = "/", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', font = f2, command = lambda : scfdo_oper("/"))
 scfbtDiv.place(x = 290, y = 333, height = 55, width = 55)
-scfbtAdd = Button(scffrm, text = "+", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', font = f2, command = lambda : scfoperation(1))
+scfbtAdd = Button(scffrm, text = "+", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', font = f2, command = lambda : scfdo_oper("+"))
 scfbtAdd.place(x = 233, y = 390, height = 55, width = 55)
-scfbtSub = Button(scffrm, text = "-", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', font = f2, command = lambda : scfoperation(2))
+scfbtSub = Button(scffrm, text = "-", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', font = f2, command = lambda : scfdo_oper("-"))
 scfbtSub.place(x = 290, y = 390, height = 55, width = 55)
-scfbtEq = Button(scffrm, text = "=", bg = '#db440d', fg = 'white', highlightbackground = '#db440d', bd = 0, font = f2, command = lambda : scfresult(1))
+scfbtEq = Button(scffrm, text = "=", bg = '#db440d', fg = 'white', highlightbackground = '#db440d', bd = 0, font = f2, command = lambda : scfresult())
 scfbtEq.place(x = 233, y = 447, height = 55, width = 112)
 
 
