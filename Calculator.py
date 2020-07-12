@@ -6,19 +6,24 @@ from math import sin, cos, tan, sinh, cosh, tanh, sqrt, radians
 window = Tk()
 window.geometry("350x550")
 window.title("PyCalc")
-photo = PhotoImage(file = "./icon.png")
-window.iconphoto(False, photo)
+icon_img = PhotoImage(file = "./app_icon.png")
+window.iconphoto(False, icon_img)
 window.configure(bg = "#383838")
 window.resizable(0,0)
 
+back_arrow_black = PhotoImage(file = "./back_arrow_black.png")
+back_arrow_white = PhotoImage(file = "./back_arrow_white.png")
 
-color_theme = 0
+color_theme = 1
+last_frame = ""
 
 f1 = tkfont.Font(size = 34, weight = 'bold')
 f2 = tkfont.Font(size = 20, weight = 'bold')
 f3 = tkfont.Font(size = 12, weight = 'bold')
 f4 = tkfont.Font(size = 24, weight = 'bold')
+f5 = tkfont.Font(size = 14, weight = 'bold')
 
+arrow_color = back_arrow_white, back_arrow_black
 color_text = ['white', 'black']
 color_bg = ['#383838', '#FFFFFF']
 color_btlevel1 = ['#9e0e0e', 'red']
@@ -29,25 +34,30 @@ color_btlevel5 = ['#555555', '#E0E0E0']
 color_btlevel6 = ['#777777', '#F0F0F0']
 
 def option_changed(*args):
+    global last_frame
     x = var.get()
     if x == "Standard":
+        last_frame = x
         scffrm.forget()
         setfrm.forget()
         stdfrm.pack()
     elif x == "Scientific":
+        last_frame = x
         stdfrm.forget()
         setfrm.forget()
         scffrm.pack()
     elif x == "Settings":
+        topfrm.forget()
         stdfrm.forget()
         scffrm.forget()
         setfrm.pack()
 
 def color_changed() :
     global color_theme
-    color_theme = 1
+    color_theme = 0
+    set_back_button.configure(image = arrow_color[color_theme])
     x = 0
-    while x < 14 :
+    while x < 16 :
         color_main[x].configure(bg = color_bg[color_theme], highlightbackground = color_bg[color_theme])
         x = x+1
     x = 0
@@ -75,7 +85,7 @@ def color_changed() :
         color_level6[x].configure(bg = color_btlevel6[color_theme], highlightbackground = color_btlevel6[color_theme])
         x = x + 1
     x = 0
-    while x < 71 :
+    while x < 73 :
         color_text_group[x].configure(fg = color_text[color_theme])
         x = x + 1
 
@@ -425,77 +435,77 @@ def scfresult() :
 ## General elements for all mode ##
 ##===============================##
 
-topfrm = Frame(window, height = 40, width = 348, background = 'black')
+topfrm = Frame(window, height = 40, width = 348, background = color_bg[color_theme])
 topfrm.pack()
 var = StringVar()
 var.set("Standard")
 var.trace('w',option_changed)
 switcher = OptionMenu(topfrm, var, "Standard", "Scientific", "Settings")
 switcher.place(x = 7, y = 7)
-switcher.configure(bg = 'red', fg = "white", highlightthickness = 0, bd = 0, activebackground = '#787878', font = f3, width = 8)
+switcher.configure(bg = color_bg[color_theme], fg = color_text[color_theme], highlightthickness = 0, bd = 0, activebackground = color_bg[color_theme], font = f3, width = 8)
 
-stdfrm = Frame(window, height = 510, width = 350, bg = "#383838")
-scffrm = Frame(window, height = 510, width = 350, bg = "#383838")
-setfrm = Frame(window, height = 550, width = 350, bg = "#383838")
+stdfrm = Frame(window, height = 510, width = 350, bg = color_bg[color_theme])
+scffrm = Frame(window, height = 510, width = 350, bg = color_bg[color_theme])
+setfrm = Frame(window, height = 550, width = 350, bg = color_bg[color_theme])
 
 ## Elements for standard calculator ##
 ##==================================##
 
-oper = Label(stdfrm, textvariable = dispoper, bg = "#383838", fg = '#C8C8C8', font = f2)
+oper = Label(stdfrm, textvariable = dispoper, bg = color_bg[color_theme], fg = color_text[color_theme], font = f2)
 oper.place(x = 320, y = 10)
-display = Label(stdfrm, textvariable = dispval, bd = 0, bg = "#383838", anchor = 'e', fg = "white", justify = RIGHT, font = f1)
+display = Label(stdfrm, textvariable = dispval, bd = 0, bg = color_bg[color_theme], anchor = 'e', fg = color_text[color_theme], justify = RIGHT, font = f1)
 display.place(x = 3, y = 75, width =340, height = 50)
-stdmemdisp = Label(stdfrm, textvariable = stdmemvar, bg = "#383838", fg = '#C8C8C8', font = f2 )
+stdmemdisp = Label(stdfrm, textvariable = stdmemvar, bg = color_bg[color_theme], fg = color_text[color_theme], font = f2 )
 stdmemdisp.place(x = 10, y = 10, height = 30, width = 30)
 
-stdbtMC = Button(stdfrm, text = "MC", bg = '#383838', fg = 'white', bd = 0, highlightbackground = "#383838", activebackground = '#383838', font = f3, command = lambda : stdcheckmem(1))
+stdbtMC = Button(stdfrm, text = "MC", bg = color_bg[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_bg[color_theme], activebackground = '#383838', font = f3, command = lambda : stdcheckmem(1))
 stdbtMC.place(x = 39, y = 165, height = 63, width = 63)
-stdbtMRC = Button(stdfrm, text = "MRC", bg = '#383838', fg = 'white', bd = 0, highlightbackground = "#383838", activebackground = '#383838', font = f3, command = lambda : stdcheckmem(2))
+stdbtMRC = Button(stdfrm, text = "MRC", bg = color_bg[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_bg[color_theme], activebackground = '#383838', font = f3, command = lambda : stdcheckmem(2))
 stdbtMRC.place(x = 108, y = 165, height = 63, width = 63)
-stdbtMadd = Button(stdfrm, text = "M+", bg = '#383838', fg = 'white',bd = 0, highlightbackground = "#383838", activebackground = '#383838', font = f3, command = lambda : stdcheckmem(3))
+stdbtMadd = Button(stdfrm, text = "M+", bg = color_bg[color_theme], fg = color_text[color_theme],bd = 0, highlightbackground = color_bg[color_theme], activebackground = '#383838', font = f3, command = lambda : stdcheckmem(3))
 stdbtMadd.place(x = 177, y = 165, height = 63, width = 63)
-stdbtMsub = Button(stdfrm, text = "M-", bg = '#383838', fg = 'white', bd = 0, highlightbackground = "#383838", activebackground = '#383838', font = f3, command = lambda : stdcheckmem(4))
+stdbtMsub = Button(stdfrm, text = "M-", bg = color_bg[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_bg[color_theme], activebackground = '#383838', font = f3, command = lambda : stdcheckmem(4))
 stdbtMsub.place(x = 246, y = 165, height = 63, width = 63)
 
 
-bt7 = Button(stdfrm, text = "7", font = f2, bg = color_bg[color_theme], fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("7"))
+bt7 = Button(stdfrm, text = "7", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda : add_disp("7"))
 bt7.place(x = 3, y = 231, width = 66, height = 66)
-bt8 = Button(stdfrm, text = "8", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("8"))
+bt8 = Button(stdfrm, text = "8", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda : add_disp("8"))
 bt8.place(x = 72, y = 231, width = 66, height = 66)
-bt9 = Button(stdfrm, text = "9", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("9"))
+bt9 = Button(stdfrm, text = "9", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda : add_disp("9"))
 bt9.place(x = 141, y = 231, width = 66, height = 66)
-bt4 = Button(stdfrm, text = "4", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("4"))
+bt4 = Button(stdfrm, text = "4", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda : add_disp("4"))
 bt4.place(x = 3, y = 300, width = 66, height = 66)
-bt5 = Button(stdfrm, text = "5", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("5"))
+bt5 = Button(stdfrm, text = "5", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda : add_disp("5"))
 bt5.place(x = 72, y = 300, width = 66, height = 66)
-bt6 = Button(stdfrm, text = "6", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("6"))
+bt6 = Button(stdfrm, text = "6", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda : add_disp("6"))
 bt6.place(x = 141, y = 300, width = 66, height = 66)
-bt1 = Button(stdfrm, text = "1", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("1"))
+bt1 = Button(stdfrm, text = "1", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda : add_disp("1"))
 bt1.place(x = 3, y = 369, width = 66, height = 66)
-bt2 = Button(stdfrm, text = "2", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("2"))
+bt2 = Button(stdfrm, text = "2", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda : add_disp("2"))
 bt2.place(x = 72, y = 369, width = 66, height = 66)
-bt3 = Button(stdfrm, text = "3", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("3"))
+bt3 = Button(stdfrm, text = "3", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda : add_disp("3"))
 bt3.place(x = 141, y = 369, width = 66, height = 66)
-btDot = Button(stdfrm, text = ".", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda :add_disp("."))
+btDot = Button(stdfrm, text = ".", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda :add_disp("."))
 btDot.place(x = 3, y = 438, width = 66, height = 66)
-bt0 = Button(stdfrm, text = "0", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda :add_disp("0"))
+bt0 = Button(stdfrm, text = "0", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda :add_disp("0"))
 bt0.place(x = 72, y = 438, width = 66, height = 66)
-btPerc = Button(stdfrm, text = "%", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : do_perc())
+btPerc = Button(stdfrm, text = "%", font = f2, bg = color_btlevel3[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = '#787878', command = lambda : do_perc())
 btPerc.place(x = 141, y = 438, width = 66, height = 66)
 
-btDel = Button(stdfrm, text = "C", font = f2, bg = '#202020', fg = 'white', bd = 0, highlightbackground = '#202020', activebackground = '#A9A9A9', command = lambda : rm_disp())
+btDel = Button(stdfrm, text = "C", font = f2, bg = color_btlevel4[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel4[color_theme], activebackground = '#A9A9A9', command = lambda : rm_disp())
 btDel.place(x = 210, y = 231, width = 66, height = 66)
-btCLR = Button(stdfrm, text = "AC", font = f2, bg = '#9e0e0e', fg = 'white', bd = 0, highlightbackground = '#9e0e0e', activebackground = '#cc3737', command = lambda : clrscr())
+btCLR = Button(stdfrm, text = "AC", font = f2, bg = color_btlevel1[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = '#9e0e0e', activebackground = '#cc3737', command = lambda : clrscr())
 btCLR.place(x = 279, y = 231, width = 66, height = 66)
-btMul = Button(stdfrm, text = "*", font = f2, bg = '#202020', fg = 'white', bd = 0, highlightbackground = '#202020', activebackground = '#A9A9A9', command = lambda : operation(3))
+btMul = Button(stdfrm, text = "*", font = f2, bg = color_btlevel4[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel4[color_theme], activebackground = '#A9A9A9', command = lambda : operation(3))
 btMul.place(x = 210, y = 300, width = 66, height = 66)
-btDiv = Button(stdfrm, text = "÷", font = f2, bg = '#202020', fg = 'white', bd = 0, highlightbackground = '#202020', activebackground = '#A9A9A9', command = lambda : operation(4))
+btDiv = Button(stdfrm, text = "÷", font = f2, bg = color_btlevel4[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel4[color_theme], activebackground = '#A9A9A9', command = lambda : operation(4))
 btDiv.place(x = 279, y = 300, width = 66, height = 66)
-btAdd = Button(stdfrm, text = "+", font = f2, bg = '#202020', fg = 'white', bd = 0, highlightbackground = '#202020', activebackground = '#A9A9A9', command = lambda : operation(1))
+btAdd = Button(stdfrm, text = "+", font = f2, bg = color_btlevel4[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel4[color_theme], activebackground = '#A9A9A9', command = lambda : operation(1))
 btAdd.place(x = 210, y = 369, width = 66, height = 66)
-btSub = Button(stdfrm, text = "-", font = f2, bg = '#202020', fg = 'white', bd = 0, highlightbackground = '#202020', activebackground = '#A9A9A9', command = lambda : operation(2))
+btSub = Button(stdfrm, text = "-", font = f2, bg = color_btlevel4[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel4[color_theme], activebackground = '#A9A9A9', command = lambda : operation(2))
 btSub.place(x = 279, y = 369, width = 66, height = 66)
-btEq = Button(stdfrm, text = "=", font = f2, bg = '#db440d', fg = 'white', bd = 0, highlightbackground = '#db440d', activebackground = '#eb6d3f', command = lambda : result(1))
+btEq = Button(stdfrm, text = "=", font = f2, bg = color_btlevel2[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = '#db440d', activebackground = '#eb6d3f', command = lambda : result(1))
 btEq.place(x = 210, y = 438, width = 135, height = 66)
 
 ## Elements for Scientic calculator ##
@@ -598,20 +608,27 @@ scfbtEq.place(x = 233, y = 447, height = 55, width = 112)
 
 # Elements in settings page
 
-bt = Button(setfrm, text = "change", command = color_changed).pack()
+
+set_back_button = Button(setfrm, image = arrow_color[color_theme], bg = color_bg[color_theme], highlightbackground = color_bg[color_theme], bd = 0)
+set_back_button.place(x = 15, y = 25)
+set_header = Label(setfrm, text = "Settings", bg = color_bg[color_theme], fg = color_text[color_theme], highlightbackground = color_bg[color_theme], font = f5)
+set_header.place(x = 50, y =22)
+
+bt = Button(setfrm, text = "change", command = color_changed)
+bt.place(x = 100, y = 400)
 
 
 
 
 
-color_main =  topfrm, switcher, stdfrm, scffrm, setfrm, oper, display, stdmemdisp, stdbtMC, stdbtMRC, stdbtMadd, stdbtMsub, scfdisplay1, scfdisplay2
+color_main =  topfrm, switcher, stdfrm, scffrm, setfrm, oper, display, stdmemdisp, stdbtMC, stdbtMRC, stdbtMadd, stdbtMsub, scfdisplay1, scfdisplay2, set_back_button, set_header
 color_level1 = btCLR, scfClr
 color_level2 = btEq, scfbtEq
 color_level3 = bt7, bt8, bt9, bt4, bt5, bt6, bt1, bt2, bt3, btDot, bt0, btPerc, scfbt7, scfbt8, scfbt9, scfbt4, scfbt5, scfbt6, scfbt1, scfbt2, scfbt3, scfbt0, scfbt00, scfbtDot
 color_level4 = btDel, btAdd, btSub, btMul, btDiv, scfbtAdd, scfbtSub, scfbtDiv, scfbtMul, scfbtx3, scfbtx2, scfbt1x, scfbtNF, scfbtSign, scfbtPerc
 color_level5 = scfbtsin, scfbtcos, scfbttan, scfbtcsc, scfbtsec, scfbtcot, scfbtrot, scfbtx10, scfbtx10, scfbtxy, scfbtPi
 color_level6 = scfbtlb, scfbtrb, scfMC, scfMRC, scfMadd, scfMsub, scfDel
-color_text_group = switcher, oper, display, stdmemdisp, stdbtMC, stdbtMRC, stdbtMadd, stdbtMsub, scfdisplay1, scfdisplay2, btCLR, scfClr, btEq, scfbtEq, bt7, bt8, bt9, bt4, bt5, bt6, bt1, bt2, bt3, btDot, bt0, btPerc, scfbt7, scfbt8, scfbt9, scfbt4, scfbt5, scfbt6, scfbt1, scfbt2, scfbt3, scfbt0, scfbt00, scfbtDot, btDel, btAdd, btSub, btMul, btDiv, scfbtAdd, scfbtSub, scfbtDiv, scfbtMul, scfbtx3, scfbtx2, scfbt1x, scfbtNF, scfbtSign, scfbtPerc, scfbtlb, scfbtrb, scfMC, scfMRC, scfMadd, scfMsub, scfDel, scfbtsin, scfbtcos, scfbttan, scfbtcsc, scfbtsec, scfbtcot, scfbtrot, scfbtx10, scfbtx10, scfbtxy, scfbtPi
+color_text_group = set_back_button, set_header, switcher, oper, display, stdmemdisp, stdbtMC, stdbtMRC, stdbtMadd, stdbtMsub, scfdisplay1, scfdisplay2, btCLR, scfClr, btEq, scfbtEq, bt7, bt8, bt9, bt4, bt5, bt6, bt1, bt2, bt3, btDot, bt0, btPerc, scfbt7, scfbt8, scfbt9, scfbt4, scfbt5, scfbt6, scfbt1, scfbt2, scfbt3, scfbt0, scfbt00, scfbtDot, btDel, btAdd, btSub, btMul, btDiv, scfbtAdd, scfbtSub, scfbtDiv, scfbtMul, scfbtx3, scfbtx2, scfbt1x, scfbtNF, scfbtSign, scfbtPerc, scfbtlb, scfbtrb, scfMC, scfMRC, scfMadd, scfMsub, scfDel, scfbtsin, scfbtcos, scfbttan, scfbtcsc, scfbtsec, scfbtcot, scfbtrot, scfbtx10, scfbtx10, scfbtxy, scfbtPi
 
 
 option_changed()
