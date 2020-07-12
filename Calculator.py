@@ -1,35 +1,83 @@
 from tkinter import *
+
 from tkinter import font as tkfont
 from math import sin, cos, tan, sinh, cosh, tanh, sqrt, radians
 
 window = Tk()
 window.geometry("350x550")
 window.title("PyCalc")
+photo = PhotoImage(file = "./icon.png")
+window.iconphoto(False, photo)
 window.configure(bg = "#383838")
 window.resizable(0,0)
+
+
+color_theme = 0
 
 f1 = tkfont.Font(size = 34, weight = 'bold')
 f2 = tkfont.Font(size = 20, weight = 'bold')
 f3 = tkfont.Font(size = 12, weight = 'bold')
 f4 = tkfont.Font(size = 24, weight = 'bold')
 
+color_text = ['white', 'black']
+color_bg = ['#383838', '#FFFFFF']
+color_btlevel1 = ['#9e0e0e', 'red']
+color_btlevel2 = ['#db440d', 'orange']
+color_btlevel3 = ['black', '#777777']
+color_btlevel4 = ['#202020', '#999999']
+color_btlevel5 = ['#555555', '#E0E0E0']
+color_btlevel6 = ['#777777', '#F0F0F0']
+
 def option_changed(*args):
     x = var.get()
     if x == "Standard":
         scffrm.forget()
-        covfrm.forget()
+        setfrm.forget()
         stdfrm.pack()
     elif x == "Scientific":
         stdfrm.forget()
-        covfrm.forget()
+        setfrm.forget()
         scffrm.pack()
-    elif x == "Converter":
+    elif x == "Settings":
         stdfrm.forget()
         scffrm.forget()
-        covfrm.pack()
+        setfrm.pack()
 
-def change_color() :
-    scfbtSign['bg'] = 'red'
+def color_changed() :
+    global color_theme
+    color_theme = 1
+    x = 0
+    while x < 14 :
+        color_main[x].configure(bg = color_bg[color_theme], highlightbackground = color_bg[color_theme])
+        x = x+1
+    x = 0
+    while x < 2 :
+        color_level1[x].configure(bg = color_btlevel1[color_theme], highlightbackground = color_btlevel1[color_theme])
+        x = x + 1
+    x = 0
+    while x < 2 :
+        color_level2[x].configure(bg = color_btlevel2[color_theme], highlightbackground = color_btlevel2[color_theme])
+        x = x + 1
+    x = 0
+    while x < 24 :
+        color_level3[x].configure(bg = color_btlevel3[color_theme], highlightbackground = color_btlevel3[color_theme])
+        x = x + 1
+    x = 0
+    while x < 15 :
+        color_level4[x].configure(bg = color_btlevel4[color_theme], highlightbackground = color_btlevel4[color_theme])
+        x = x + 1
+    x = 0
+    while x < 11 :
+        color_level5[x].configure(bg = color_btlevel5[color_theme], highlightbackground = color_btlevel5[color_theme])
+        x = x + 1
+    x = 0
+    while x < 7 :
+        color_level6[x].configure(bg = color_btlevel6[color_theme], highlightbackground = color_btlevel6[color_theme])
+        x = x + 1
+    x = 0
+    while x < 71 :
+        color_text_group[x].configure(fg = color_text[color_theme])
+        x = x + 1
 
 ## vriables for standard calculator ##
 ##''''''''''''''''''''''''''''''''''##
@@ -53,6 +101,7 @@ scfvalue = ""
 scfmemvar = StringVar()
 scftempdispval = StringVar()
 scftrigcheck = 0
+Pi = 3.14
 scfpowercheck = 0
 scfevalue1 = 0
 scfvalu2 = 0
@@ -298,16 +347,50 @@ def scfdo_power(x) :
         scfvalue = scfvalue + "√("
         scfdispval.set(scfvalue)
         scfeval = scfeval + "sqrt("
-        
+    if x == 2:
+        scfvalue = scfvalue + "^"
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "**"
+    if x == 3:
+        scfvalue = scfvalue + "^10"
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "**10"
+    if x == 4:
+        scfvalue = scfvalue + "^3"
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "**3"
+    if x == 5:
+        scfvalue = scfvalue + "^2"
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "**2"
+
+def scfdo_extrafn(x) :
+    global Pi, scfvalue, scfeval
+    if x == 1 :
+        scfvalue = scfvalue + "π"
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "3.14"
+    if x == 2 :
+        scfvalue = scfvalue + "1/("
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "1/("
+    if x == 3 :
+        scfvalue = scfvalue + "!"
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "!"
+    if x == 4 :
+        scfvalue = scfvalue + "π"
+        scfdispval.set(scfvalue)
+        scfeval = scfeval + "3.14"
+
 def scfdo_oper(x) :
     global scfvalue, scfeval, scftrigcheck
-    if x == '+' :
-        if scftrigcheck == 1 :
-            scfeval = scfeval + ")"
-            scftrigcheck = 0
-        scfvalue = scfvalue + x
-        scfeval = scfeval + x
-        scfdispval.set(scfvalue)
+    if scftrigcheck == 1 :
+        scfeval = scfeval + ")"
+        scftrigcheck = 0
+    scfvalue = scfvalue + x
+    scfeval = scfeval + x
+    scfdispval.set(scfvalue)
     
 
 
@@ -342,17 +425,18 @@ def scfresult() :
 ## General elements for all mode ##
 ##===============================##
 
-basefrm = Frame(window, height = 40, width = 348, bg = "#383838").pack()
-var = StringVar(basefrm)
+topfrm = Frame(window, height = 40, width = 348, background = 'black')
+topfrm.pack()
+var = StringVar()
 var.set("Standard")
 var.trace('w',option_changed)
-switcher = OptionMenu(basefrm, var, "Standard", "Scientific", "Converter")
+switcher = OptionMenu(topfrm, var, "Standard", "Scientific", "Settings")
 switcher.place(x = 7, y = 7)
-switcher.configure(bg = "#383838", fg = "white", highlightthickness = 0, bd = 0, activebackground = '#787878', font = f3, width = 8)
+switcher.configure(bg = 'red', fg = "white", highlightthickness = 0, bd = 0, activebackground = '#787878', font = f3, width = 8)
 
 stdfrm = Frame(window, height = 510, width = 350, bg = "#383838")
 scffrm = Frame(window, height = 510, width = 350, bg = "#383838")
-covfrm = Frame(window, height = 510, width = 350, bg = "#383838")
+setfrm = Frame(window, height = 550, width = 350, bg = "#383838")
 
 ## Elements for standard calculator ##
 ##==================================##
@@ -374,7 +458,7 @@ stdbtMsub = Button(stdfrm, text = "M-", bg = '#383838', fg = 'white', bd = 0, hi
 stdbtMsub.place(x = 246, y = 165, height = 63, width = 63)
 
 
-bt7 = Button(stdfrm, text = "7", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("7"))
+bt7 = Button(stdfrm, text = "7", font = f2, bg = color_bg[color_theme], fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("7"))
 bt7.place(x = 3, y = 231, width = 66, height = 66)
 bt8 = Button(stdfrm, text = "8", font = f2, bg = 'black', fg = 'white', bd = 0, highlightbackground = 'black', activebackground = '#787878', command = lambda : add_disp("8"))
 bt8.place(x = 72, y = 231, width = 66, height = 66)
@@ -480,24 +564,24 @@ scfbtDot.place(x = 119, y = 447, height = 55, width = 55)
 
 scfbtrot = Button(scffrm, text = "√x", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555', command = lambda : scfdo_power(1))
 scfbtrot.place(x = 119, y = 219, height = 55, width = 55)
-scfbtxy = Button(scffrm, text = "xy", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555')
+scfbtxy = Button(scffrm, text = "xy", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555', command = lambda : scfdo_power(2))
 scfbtxy.place(x = 176, y = 219, height = 55, width = 55)
-scfbt10x = Button(scffrm, text = "10X", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555')
-scfbt10x.place(x = 233, y = 219, height = 55, width = 55)
-scfbtPi = Button(scffrm, text = "Pi", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555')
+scfbtx10 = Button(scffrm, text = "x10", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555', command = lambda : scfdo_power(3))
+scfbtx10.place(x = 233, y = 219, height = 55, width = 55)
+scfbtPi = Button(scffrm, text = "π", bd = 0, bg = '#555555', fg = 'white', highlightbackground = '#555555', command = lambda : scfdo_extrafn(1))
 scfbtPi.place(x = 290, y = 219, height = 55, width = 55)
 
-scfbtx3 = Button(scffrm, text = "x³", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020')
+scfbtx3 = Button(scffrm, text = "x³", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', command = lambda : scfdo_power(4))
 scfbtx3.place(x = 176, y = 276, height = 55, width = 55)
-scfbt1x = Button(scffrm, text = "¹⁄x", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020')
+scfbt1x = Button(scffrm, text = "¹⁄x", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', command = lambda : scfdo_extrafn(2))
 scfbt1x.place(x = 233, y = 276, height = 55, width = 55)
-scfbtNF = Button(scffrm, text = "x !", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020')
+scfbtNF = Button(scffrm, text = "x !", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', command = lambda : scfdo_extrafn(3))
 scfbtNF.place(x = 290, y = 276, height = 55, width = 55)
-scfbtx2 = Button(scffrm, text = "x²", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020')
+scfbtx2 = Button(scffrm, text = "x²", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', command = lambda : scfdo_power(5))
 scfbtx2.place(x = 176, y = 333, height = 55, width = 55)
 scfbtPerc = Button(scffrm, text = "%", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', command = lambda : scfdo_perc())
 scfbtPerc.place(x = 176, y = 390, height = 55, width = 55)
-scfbtSign = Button(scffrm, text = "+/-", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', command = change_color)
+scfbtSign = Button(scffrm, text = "+/-", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', command = lambda : scfdo_extrafn(4))
 scfbtSign.place(x = 176, y = 447, height = 55, width = 55)
 
 scfbtMul = Button(scffrm, text = "*", bd = 0, bg = '#202020', fg = 'white', highlightbackground = '#202020', font = f2, command = lambda : scfdo_oper("*"))
@@ -510,6 +594,24 @@ scfbtSub = Button(scffrm, text = "-", bd = 0, bg = '#202020', fg = 'white', high
 scfbtSub.place(x = 290, y = 390, height = 55, width = 55)
 scfbtEq = Button(scffrm, text = "=", bg = '#db440d', fg = 'white', highlightbackground = '#db440d', bd = 0, font = f2, command = lambda : scfresult())
 scfbtEq.place(x = 233, y = 447, height = 55, width = 112)
+
+
+# Elements in settings page
+
+bt = Button(setfrm, text = "change", command = color_changed).pack()
+
+
+
+
+
+color_main =  topfrm, switcher, stdfrm, scffrm, setfrm, oper, display, stdmemdisp, stdbtMC, stdbtMRC, stdbtMadd, stdbtMsub, scfdisplay1, scfdisplay2
+color_level1 = btCLR, scfClr
+color_level2 = btEq, scfbtEq
+color_level3 = bt7, bt8, bt9, bt4, bt5, bt6, bt1, bt2, bt3, btDot, bt0, btPerc, scfbt7, scfbt8, scfbt9, scfbt4, scfbt5, scfbt6, scfbt1, scfbt2, scfbt3, scfbt0, scfbt00, scfbtDot
+color_level4 = btDel, btAdd, btSub, btMul, btDiv, scfbtAdd, scfbtSub, scfbtDiv, scfbtMul, scfbtx3, scfbtx2, scfbt1x, scfbtNF, scfbtSign, scfbtPerc
+color_level5 = scfbtsin, scfbtcos, scfbttan, scfbtcsc, scfbtsec, scfbtcot, scfbtrot, scfbtx10, scfbtx10, scfbtxy, scfbtPi
+color_level6 = scfbtlb, scfbtrb, scfMC, scfMRC, scfMadd, scfMsub, scfDel
+color_text_group = switcher, oper, display, stdmemdisp, stdbtMC, stdbtMRC, stdbtMadd, stdbtMsub, scfdisplay1, scfdisplay2, btCLR, scfClr, btEq, scfbtEq, bt7, bt8, bt9, bt4, bt5, bt6, bt1, bt2, bt3, btDot, bt0, btPerc, scfbt7, scfbt8, scfbt9, scfbt4, scfbt5, scfbt6, scfbt1, scfbt2, scfbt3, scfbt0, scfbt00, scfbtDot, btDel, btAdd, btSub, btMul, btDiv, scfbtAdd, scfbtSub, scfbtDiv, scfbtMul, scfbtx3, scfbtx2, scfbt1x, scfbtNF, scfbtSign, scfbtPerc, scfbtlb, scfbtrb, scfMC, scfMRC, scfMadd, scfMsub, scfDel, scfbtsin, scfbtcos, scfbttan, scfbtcsc, scfbtsec, scfbtcot, scfbtrot, scfbtx10, scfbtx10, scfbtxy, scfbtPi
 
 
 option_changed()
