@@ -38,11 +38,13 @@ def option_changed(*args):
     x = var.get()
     if x == "Standard":
         last_frame = x
+        topfrm.pack()
         scffrm.forget()
         setfrm.forget()
         stdfrm.pack()
     elif x == "Scientific":
         last_frame = x
+        topfrm.pack()
         stdfrm.forget()
         setfrm.forget()
         scffrm.pack()
@@ -432,6 +434,14 @@ def scfresult() :
     scfvalue = str(x)
     scfdispval.set(scfvalue)
 
+# Functions for settings page
+
+def set_go_back() :
+    global var
+    var.set(last_frame)
+    option_changed()
+
+
 ## General elements for all mode ##
 ##===============================##
 
@@ -609,7 +619,7 @@ scfbtEq.place(x = 233, y = 447, height = 55, width = 112)
 # Elements in settings page
 
 
-set_back_button = Button(setfrm, image = arrow_color[color_theme], bg = color_bg[color_theme], highlightbackground = color_bg[color_theme], bd = 0)
+set_back_button = Button(setfrm, image = arrow_color[color_theme], bg = color_bg[color_theme], highlightbackground = color_bg[color_theme], bd = 0, command = set_go_back)
 set_back_button.place(x = 15, y = 25)
 set_header = Label(setfrm, text = "Settings", bg = color_bg[color_theme], fg = color_text[color_theme], highlightbackground = color_bg[color_theme], font = f5)
 set_header.place(x = 50, y =22)
