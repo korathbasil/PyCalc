@@ -1,5 +1,9 @@
 # Change log for PyCalc
 
+## v3.0.0 - Jul, 12, 2020
+**Added:**
+-Scientific Calculator
+
 
 ## v2.0.0 - Jun, 28, 2020
 **Added:**
