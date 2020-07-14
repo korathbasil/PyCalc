@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import font as tkfont
 from math import sin, cos, tan, sinh, cosh, tanh, sqrt, radians
+import json
 
 window = Tk()
 window.geometry("350x550")
@@ -15,7 +16,10 @@ back_arrow_white = PhotoImage(file = "./back_arrow_white.png")
 dark_theme_img = PhotoImage(file = "./dark_theme.png")
 light_theme_img = PhotoImage(file = "./light_theme.png")
 
-color_theme = 1
+set_file = open("settings.json",)
+color_theme_data = json.load(set_file)
+color_theme = color_theme_data["theme"]
+set_file.close()
 last_frame = ""
 
 f1 = tkfont.Font(size = 34, weight = 'bold')
@@ -61,6 +65,14 @@ def option_changed(*args):
 def color_changed() :
     global color_theme, theme_variable
     color_theme = theme_variable.get()
+
+    # Writing theme settings to settings.json
+
+    color_theme_data["theme"] = color_theme
+    set_file = open("settings.json",'w')
+    json.dump(color_theme_data, set_file, indent = "")
+    set_file.close()
+
     set_back_button.configure(highlightbackground = color_header_bg[color_theme], activebackground = color_header_bg[color_theme],bg = color_header_bg[color_theme],image = arrow_color[color_theme])
     topfrm.configure(bg = color_header_bg[color_theme])
     set_top_frame.configure(bg = color_btlevel4[color_theme])
@@ -476,7 +488,7 @@ def set_go_back() :
 ## General elements for all mode ##
 ##===============================##
 
-topfrm = Frame(window, height = 40, width = 348, background = color_header_bg[color_theme])
+topfrm = Frame(window, height = 40, width = 350, background = color_header_bg[color_theme])
 topfrm.pack()
 var = StringVar()
 var.set("Standard")
@@ -661,9 +673,9 @@ set_header = Label(setfrm, text = "Settings", bg = color_header_bg[color_theme],
 set_header.place(x = 35, y =9)
 theme  = Label(setfrm, text = "Themes", font = f5, bg = color_bg[color_theme], fg = color_text[color_theme], highlightbackground = color_bg[color_theme])
 theme.place(x = 25, y = 75)
-light_theme = Label(setfrm, image = light_theme_img)
+light_theme = Label(setfrm, image = light_theme_img, bg = color_bg[color_theme])
 light_theme.place(x = 55, y = 125, height = 150, width = 100)
-dark_theme = Label(setfrm, image = dark_theme_img)
+dark_theme = Label(setfrm, image = dark_theme_img, bg = color_bg[color_theme])
 dark_theme.place(x = 195, y = 125, height = 150, width = 100)
 light_theme_button = Radiobutton(setfrm, text = "Light", variable = theme_variable, value = 1, bg = color_bg[color_theme], fg = color_text[color_theme], highlightbackground = color_bg[color_theme]) 
 light_theme_button.place(x = 70, y = 285)
