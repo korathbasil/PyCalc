@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import font as tkfont
 from math import sin, cos, tan, sinh, cosh, tanh, sqrt, radians
 import json
+import webbrowser
 
 window = Tk()
 window.geometry("350x550")
@@ -15,6 +16,8 @@ back_arrow_black = PhotoImage(file = "./back_arrow_black.png")
 back_arrow_white = PhotoImage(file = "./back_arrow_white.png")
 dark_theme_img = PhotoImage(file = "./dark_theme.png")
 light_theme_img = PhotoImage(file = "./light_theme.png")
+github_dark_img = PhotoImage(file = "./github_dark.png")
+github_light_img = PhotoImage(file = "./github_light.png")
 
 set_file = open("settings.json",)
 color_theme_data = json.load(set_file)
@@ -29,11 +32,12 @@ f4 = tkfont.Font(size = 24, weight = 'bold')
 f5 = tkfont.Font(size = 14, weight = 'bold')
 
 arrow_color =  back_arrow_white, back_arrow_black 
+github_image = github_light_img, github_dark_img
 color_text = ['white', 'black']
 color_bg = ['#383838', '#FFFFFF']
 color_header_bg = ['#202020','#f3e2c6']
-color_btlevel1 = ['#9e0e0e', '#9e0e0e']
-color_btlevel2 = ['#db440d', '#db440d']
+color_btlevel1 = ['#9e0e0e', '#ff1f22']
+color_btlevel2 = ['#db440d', '#ff501f']
 color_btlevel3 = ['black', '#efc5b5']
 color_btlevel4 = ['#202020', '#f3e2c6']
 color_btlevel5 = ['#555555', '#f0ead2']
@@ -76,8 +80,10 @@ def color_changed() :
     set_back_button.configure(highlightbackground = color_header_bg[color_theme], activebackground = color_header_bg[color_theme],bg = color_header_bg[color_theme],image = arrow_color[color_theme])
     topfrm.configure(bg = color_header_bg[color_theme])
     set_top_frame.configure(bg = color_btlevel4[color_theme])
-    light_theme.configure(bg = color_bg[color_theme], fg = color_text[color_theme])
-    dark_theme.configure(bg = color_bg[color_theme], fg = color_text[color_theme])
+    light_theme.configure(bg = color_bg[color_theme])
+    light_theme_button.configure(bg = color_bg[color_theme], fg = color_text[color_theme])
+    dark_theme.configure(bg = color_bg[color_theme])
+    dark_theme_button.configure(bg = color_bg[color_theme], fg = color_text[color_theme])
     set_header.configure(bg = color_header_bg[color_theme], fg = color_text[color_theme])
     switcher.configure(bg = color_header_bg[color_theme], activebackground = color_header_bg[color_theme])
     theme.configure(fg = color_text[color_theme])
@@ -484,6 +490,8 @@ def set_go_back() :
     var.set(last_frame)
     option_changed()
 
+def visit_github() :
+    webbrowser.open("https://github.com/korathbasil/PyCalc")
 
 ## General elements for all mode ##
 ##===============================##
@@ -684,7 +692,14 @@ dark_theme_button.place(x = 210, y = 285)
 apply_button = Button(setfrm, text = "Apply", relief = GROOVE, bg = color_header_bg[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_header_bg[color_theme], activebackground = color_header_bg[color_theme], command = color_changed, font = f5)
 apply_button.place(x = 250, y = 325)
 
-
+about_text = Label(setfrm, text = "About", font = f5, bg = color_bg[color_theme], fg = color_text[color_theme], highlightbackground = color_bg[color_theme])
+about_text.place(x = 25, y = 375)
+creator_text = Label(setfrm, text = "Creator : Bazil Korath", bg = color_bg[color_theme], fg = color_text[color_theme], highlightbackground = color_bg[color_theme])
+creator_text.place(x = 55, y = 410)
+github_text = Label(setfrm, text = "Visit Github repository  ", bg = color_bg[color_theme], fg = color_text[color_theme], highlightbackground = color_bg[color_theme])
+github_text.place(x = 55, y = 430)
+github_button = Button(setfrm, image = github_image[color_theme], bd = 0, highlightbackground = color_bg[color_theme], activebackground = color_bg[color_theme], bg = color_bg[color_theme], fg = color_text[color_theme], command = visit_github)
+github_button.place(x = 190, y = 410)
 
 # Grouping elements  with same color changes so  changing them all at once is easy
 
