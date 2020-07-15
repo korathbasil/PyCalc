@@ -4,5 +4,5 @@
 PyCalc is a modern looking GUI calculator app built in Python using Tkinter library
 
 **What's new** - [Change log](CHANGELOG.md)<br>
--Scientific calculator
+-Scientific calculator<br>
 -color themes
