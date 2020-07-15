@@ -354,12 +354,14 @@ def add_scfdisp(x):
     scfdispval.set(scfvalue)
 
 def scfclrscr():
-    global scftrigcheck, scfvalue, scfeval
+    global scftrigcheck, scfvalue, scfeval, scf_last_add, scf_last_add2
     scfvalue = ""
     scfdispval.set(scfvalue)
     scftrigcheck = 0
     scfeval = ""
     scftempdispval.set("")
+    scf_last_add = 0
+    scf_last_add2 = 0
 
 def scfrm_disp():
     global scfvalue
@@ -380,7 +382,7 @@ def scfdo_trig(x) :
         scfvalue = scfvalue + "sin("
         scfdispval.set(scfvalue)
         scfeval = scfeval + "sin(radians("
-        scftrigcheck = 1
+        scftrigcheck = scftrigcheck + 1
     elif x == 2 :
         scfvalue = scfvalue + "cos("
         scfdispval.set(scfvalue)
@@ -463,22 +465,18 @@ def scfdo_extrafn(x) :
             scfeval = scfeval[:scf_last_add] + "-" + scfeval[scf_last_add+1:]
         elif scfeval[scf_last_add] == '-' :
             scfeval = scfeval[:scf_last_add] + "+" + scfeval[scf_last_add+1:] 
-      
-       
+
 def scfdo_oper(x) :
     global scfvalue, scfeval, scftrigcheck, scf_last_add2, scf_last_add
-    if scftrigcheck == 1 :
+    while scftrigcheck != 0 :
         scfeval = scfeval + ")"
-        scftrigcheck = 0
+        scftrigcheck = scftrigcheck - 1
     scfvalue = scfvalue + x
     scfeval = scfeval + x
     scfdispval.set(scfvalue)
     if x == '+' or x == '-' :
         scf_last_add = len(scfeval)-1
         scf_last_add2 = len(scfvalue)-1
-
-    
-
 
 def scfcheckmem(x):
     global scfm, scfvalue, scfmemvar, scfdispval, scfeval
@@ -504,14 +502,17 @@ def scfcheckmem(x):
 
 def scfresult() :
     global scfvalue, scfeval, scftrigcheck, scfanscheck
-    if scftrigcheck == 1:
+    while scftrigcheck != 0 :
         scfeval = scfeval + ")"
+        scftrigcheck = scftrigcheck - 1
     try :
         x = eval(scfeval)
         scftempdispval.set(scfvalue)
         scfvalue = str(x)
     except ZeroDivisionError :
         scftempdispval.set("Can't devide by 0")
+    except SyntaxError :
+        scftempdispval.set("Syntax Error")
     scfdispval.set(scfvalue)
     scfanscheck = 1
 
@@ -670,9 +671,9 @@ scfbtDot.place(x = 119, y = 447, height = 55, width = 55)
 
 scfbtrot = Button(scffrm, text = "√x", bd = 0, bg = color_btlevel5[color_theme], activeforeground = color_text[color_theme], fg = color_text[color_theme], highlightbackground = color_btlevel5[color_theme], activebackground = color_btlevel5[color_theme], command = lambda : scfdo_power(1))
 scfbtrot.place(x = 119, y = 219, height = 55, width = 55)
-scfbtxy = Button(scffrm, text = "xy", bd = 0, bg = color_btlevel5[color_theme], activeforeground = color_text[color_theme], fg = color_text[color_theme], highlightbackground = color_btlevel5[color_theme], activebackground = color_btlevel5[color_theme], command = lambda : scfdo_power(2))
+scfbtxy = Button(scffrm, text = "xʸ", bd = 0, bg = color_btlevel5[color_theme], activeforeground = color_text[color_theme], fg = color_text[color_theme], highlightbackground = color_btlevel5[color_theme], activebackground = color_btlevel5[color_theme], command = lambda : scfdo_power(2))
 scfbtxy.place(x = 176, y = 219, height = 55, width = 55)
-scfbtx10 = Button(scffrm, text = "x10", bd = 0, bg = color_btlevel5[color_theme], activeforeground = color_text[color_theme], fg = color_text[color_theme], highlightbackground = color_btlevel5[color_theme], activebackground = color_btlevel5[color_theme], command = lambda : scfdo_power(3))
+scfbtx10 = Button(scffrm, text = "x¹⁰", bd = 0, bg = color_btlevel5[color_theme], activeforeground = color_text[color_theme], fg = color_text[color_theme], highlightbackground = color_btlevel5[color_theme], activebackground = color_btlevel5[color_theme], command = lambda : scfdo_power(3))
 scfbtx10.place(x = 233, y = 219, height = 55, width = 55)
 scfbtPi = Button(scffrm, text = "π", bd = 0, bg = color_btlevel5[color_theme], activeforeground = color_text[color_theme], fg = color_text[color_theme], highlightbackground = color_btlevel5[color_theme], activebackground = color_btlevel5[color_theme], command = lambda : scfdo_extrafn(1))
 scfbtPi.place(x = 290, y = 219, height = 55, width = 55)
