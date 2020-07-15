@@ -367,6 +367,7 @@ def scfrm_disp():
     global scfvalue
     x = len(scfvalue)
     scfvalue = scfvalue[:x-1]
+    scfeval = scfeval[:len(scfeval)-1]
     scfdispval.set(scfvalue)
 
 def scfdo_perc():
