@@ -146,8 +146,8 @@ anscheck = 0
 stdm = 0
 stdmemvar = StringVar()
 
-## vriables for scientific calculator ##
-##''''''''''''''''''''''''''''''''''''##
+# variables for scientific calculator 
+
 
 scfdispval = StringVar()
 scfvalue = ""
@@ -170,8 +170,8 @@ scfeval = ""
 theme_variable = IntVar()
 theme_variable.set(1)
 
-## functions for standard calculator ##
-##'''''''''''''''''''''''''''''''''''##
+# functions for standard calculator 
+
 
 def clrscr():
     global check, value1, value2, ans, anscheck
@@ -338,8 +338,8 @@ def stdcheckmem(x):
         stdm = 0
         stdmemvar.set("")
 
-## functions for scientific calculator ##
-##'''''''''''''''''''''''''''''''''''''##
+# functions for scientific calculator 
+
 
 def add_scfdisp(x):
     global scfvalue, scfeval, scftrigcheck, scfanscheck, scf_last_add, scf_last_add2
@@ -525,8 +525,7 @@ def set_go_back() :
 def visit_github() :
     webbrowser.open("https://github.com/korathbasil/PyCalc")
 
-## General elements for all mode ##
-##===============================##
+# General elements for all mode 
 
 topfrm = Frame(window, height = 40, width = 350, background = color_header_bg[color_theme])
 topfrm.pack()
@@ -543,8 +542,7 @@ setfrm = Frame(window, height = 550, width = 350, bg = color_bg[color_theme])
 set_top_frame = Frame(setfrm, height = 40, width = 350, bg = color_header_bg[color_theme])
 set_bottom_frame = Frame(setfrm, height = 510, width = 350, bg = color_bg[color_theme])
 
-## Elements for standard calculator ##
-##==================================##
+# Elements for standard calculator 
 
 oper = Label(stdfrm, textvariable = dispoper, bg = color_bg[color_theme], fg = color_text[color_theme], font = f5, anchor = 'e', justify = RIGHT)
 oper.place(x = 140, y = 10, width = 200)
@@ -603,8 +601,8 @@ btSub.place(x = 279, y = 369, width = 66, height = 66)
 btEq = Button(stdfrm, text = "=", font = f2, bg = color_btlevel2[color_theme], activeforeground = color_text[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel2[color_theme], activebackground = color_btlevel2[color_theme], command = lambda : result(1))
 btEq.place(x = 210, y = 438, width = 135, height = 66)
 
-## Elements for Scientic calculator ##
-##==================================##
+# Elements for Scientic calculator 
+
 
 scfdisplay1 = Label(scffrm, textvariable = scfdispval, bg = color_bg[color_theme], fg = color_text[color_theme], anchor = 'e', justify = RIGHT, font = f4)
 scfdisplay1.place(x = 5, y = 40, height = 60, width = 340)
