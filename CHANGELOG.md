@@ -1,5 +1,11 @@
 # Change log for PyCalc
 
+## v4.0.0 - Jul, 15, 2020
+**Added:**
+- Color themes
+- Saved settings file
+
+
 ## v3.0.0 - Jul, 12, 2020
 **Added:**
 -Scientific Calculator
