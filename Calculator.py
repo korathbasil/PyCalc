@@ -12,12 +12,16 @@ window.iconphoto(False, icon_img)
 window.configure(bg = "#383838")
 window.resizable(0,0)
 
+# storing images for dark and light themes
+
 back_arrow_black = PhotoImage(file = "./back_arrow_black.png")
 back_arrow_white = PhotoImage(file = "./back_arrow_white.png")
 dark_theme_img = PhotoImage(file = "./dark_theme.png")
 light_theme_img = PhotoImage(file = "./light_theme.png")
 github_dark_img = PhotoImage(file = "./github_dark.png")
 github_light_img = PhotoImage(file = "./github_light.png")
+
+# loading previously saved theme setting from settings.json
 
 set_file = open("settings.json",)
 color_theme_data = json.load(set_file)
@@ -31,6 +35,8 @@ f3 = tkfont.Font(size = 12, weight = 'bold')
 f4 = tkfont.Font(size = 24, weight = 'bold')
 f5 = tkfont.Font(size = 14, weight = 'bold')
 
+# colors  and images for changing themes
+
 arrow_color =  back_arrow_white, back_arrow_black 
 github_image = github_light_img, github_dark_img
 color_text = ['white', 'black']
@@ -42,6 +48,8 @@ color_btlevel3 = ['black', '#efc5b5']
 color_btlevel4 = ['#202020', '#f3e2c6']
 color_btlevel5 = ['#555555', '#f0ead2']
 color_btlevel6 = ['#777777', '#efe7df']
+
+# changing windows when the option menu value is changed
 
 def option_changed(*args):
     global last_frame
@@ -65,6 +73,8 @@ def option_changed(*args):
         setfrm.pack()
         set_top_frame.pack()
         set_bottom_frame.pack()
+
+# altering all elements with new theme
 
 def color_changed() :
     global color_theme, theme_variable
@@ -364,21 +374,44 @@ def scfclrscr():
     scf_last_add2 = 0
 
 def scfrm_disp():
-    global scfvalue
+    global scfvalue, scfeval
     x = len(scfvalue)
     scfvalue = scfvalue[:x-1]
     scfeval = scfeval[:len(scfeval)-1]
     scfdispval.set(scfvalue)
 
 def scfdo_perc():
-    global scfvalue
-    x = float(scfvalue)
-    x = x /100
-    scfvalue = str(x)
-    scfdispval.set(scfvalue)
+    global scfvalue, scf_last_add, scf_last_add2, scfeval
+    if scf_last_add == 0 :
+        temp3 = eval(scfeval)/100
+        scfeval = str(temp3)
+        scfvalue = scfvalue + "%"
+        scfdispval.set(scfvalue)
+    if scfvalue[scf_last_add2] == '+' :
+        temp1 = eval(scfeval[:scf_last_add])
+        temp2 = eval(scfeval[scf_last_add+1:])
+        percentage = temp1 * temp2 /100
+        scfeval = scfeval[:scf_last_add] + "+" + str(percentage)
+        scfvalue = scfvalue + "%" 
+        scfdispval.set(scfvalue)
+    if scfvalue[scf_last_add2] == '-' :
+        temp1 = eval(scfeval[:scf_last_add])
+        temp2 = eval(scfeval[scf_last_add+1:])
+        percentage = temp1 * temp2 /100
+        scfeval = scfeval[:scf_last_add] + "-" + str(percentage)
+        scfvalue = scfvalue + "%" 
+        scfdispval.set(scfvalue)
+     
+    
 
 def scfdo_trig(x) :
-    global scfvalue, scfeval, scftrigcheck
+    global scfvalue, scfeval, scftrigcheck, scfanscheck
+    if scfanscheck == 1 :
+        scfvalue = ""
+        scfdispval.set(scfvalue)
+        scftrigcheck = 0
+        scfeval = ""
+        scfanscheck = 0
     if x == 1 :
         scfvalue = scfvalue + "sin("
         scfdispval.set(scfvalue)
@@ -411,7 +444,13 @@ def scfdo_trig(x) :
         scftrigcheck = 1
 
 def scfdo_power(x) :
-    global scfvalue, scfeval, scfpowercheck
+    global scfvalue, scfeval, scfpowercheck, scfanscheck
+    if scfanscheck == 1 :
+        scfvalue = ""
+        scfdispval.set(scfvalue)
+        scftrigcheck = 0
+        scfeval = ""
+        scfanscheck = 0
     if x == 1:
         scfvalue = scfvalue + "√("
         scfdispval.set(scfvalue)
@@ -434,7 +473,13 @@ def scfdo_power(x) :
         scfeval = scfeval + "**2"
 
 def scfdo_extrafn(x) :
-    global Pi, scfvalue, scfeval, scf_last_add, scf_last_add2
+    global Pi, scfvalue, scfeval, scf_last_add, scf_last_add2, scfanscheck
+    if scfanscheck == 1 :
+        scfvalue = ""
+        scfdispval.set(scfvalue)
+        scftrigcheck = 0
+        scfeval = ""
+        scfanscheck = 0
     if x == 1 :
         scfvalue = scfvalue + "π"
         scfdispval.set(scfvalue)
