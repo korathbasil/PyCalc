@@ -468,7 +468,9 @@ def scfdo_extrafn(x) :
             scfeval = scfeval[:scf_last_add] + "+" + scfeval[scf_last_add+1:] 
 
 def scfdo_oper(x) :
-    global scfvalue, scfeval, scftrigcheck, scf_last_add2, scf_last_add
+    global scfvalue, scfeval, scftrigcheck, scf_last_add2, scf_last_add, scfanscheck
+    if scfanscheck == 1 :
+        scfanscheck = 0
     while scftrigcheck != 0 :
         scfeval = scfeval + ")"
         scftrigcheck = scftrigcheck - 1
