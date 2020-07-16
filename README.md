@@ -1,9 +1,9 @@
 # PyCalc
 
-**version 4.0**<br>
+**version 4.0** - [Change log](CHANGELOG.md)<br>
 PyCalc is a modern looking GUI calculator app built in Python using Tkinter library
 
-**Features** - [Change log](CHANGELOG.md)<br>
+**Features**<br>
 -Standard Calculator<br>
 -Scientific Calculator
 <br>
