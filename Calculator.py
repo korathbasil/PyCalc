@@ -4,6 +4,10 @@ from math import sin, cos, tan, sinh, cosh, tanh, sqrt, radians, factorial
 import json
 import webbrowser
 
+from models import StandardCalculatorButtons as Buttons
+
+
+
 window = Tk()
 window.geometry("350x550")
 window.title("PyCalc")
