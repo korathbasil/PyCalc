@@ -1,7 +1,7 @@
 # colors  and images for changing themes
 
-arrow_color =  back_arrow_white, back_arrow_black 
-github_image = github_light_img, github_dark_img
+# arrow_color =  back_arrow_white, back_arrow_black 
+# github_image = github_light_img, github_dark_img
 color_text = ['white', 'black']
 color_bg = ['#383838', '#FFFFFF']
 color_header_bg = ['#202020','#f3e2c6']
@@ -13,4 +13,6 @@ color_btlevel5 = ['#555555', '#f0ead2']
 color_btlevel6 = ['#777777', '#efe7df']
 
 
-button_type_one = ['black', '#efc5b5']
+text = ['white', 'black']
+
+button_type_1 = ['black', '#efc5b5']

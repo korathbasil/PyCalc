@@ -4,7 +4,6 @@ from math import sin, cos, tan, sinh, cosh, tanh, sqrt, radians, factorial
 import json
 import webbrowser
 
-from models import StandardCalculatorButtons as Buttons
 
 
 
@@ -15,6 +14,10 @@ icon_img = PhotoImage(file = "./app_icon.png")
 window.iconphoto(False, icon_img)
 window.configure(bg = "#383838")
 window.resizable(0,0)
+
+from models import StandardCalculatorButtons as StandardButtons
+
+from config import fonts
 
 # storing images for dark and light themes
 
@@ -621,8 +624,10 @@ stdbtMsub = Button(frame_standard, text = "M-", bg = color_bg[color_theme], acti
 stdbtMsub.place(x = 246, y = 165, height = 63, width = 63)
 
 
-bt7 = Button(frame_standard, text = "7", font = f2, bg = color_btlevel3[color_theme], activeforeground = color_text[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = color_btlevel3[color_theme], command = lambda : add_disp("7"))
-bt7.place(x = 3, y = 231, width = 66, height = 66)
+bt7 = StandardButtons.TypeOne(frame_standard, "7", 3, 231, lambda: add_disp("7"), color_theme)
+
+# bt7 = Button(frame_standard, text = "7", font = f2, bg = color_btlevel3[color_theme], activeforeground = color_text[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = color_btlevel3[color_theme], command = lambda : add_disp("7"))
+# bt7.place(x = 3, y = 231, width = 66, height = 66)
 bt8 = Button(frame_standard, text = "8", font = f2, bg = color_btlevel3[color_theme], activeforeground = color_text[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = color_btlevel3[color_theme], command = lambda : add_disp("8"))
 bt8.place(x = 72, y = 231, width = 66, height = 66)
 bt9 = Button(frame_standard, text = "9", font = f2, bg = color_btlevel3[color_theme], activeforeground = color_text[color_theme], fg = color_text[color_theme], bd = 0, highlightbackground = color_btlevel3[color_theme], activebackground = color_btlevel3[color_theme], command = lambda : add_disp("9"))
